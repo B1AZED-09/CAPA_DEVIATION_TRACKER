@@ -21,7 +21,7 @@ MHRA GMP inspections turn on documentation discipline. When a deviation occurs o
 
 | Login Screen | PDF Report |
 | :--- | :--- |
-| ![Login](screenshots/login.png) | ![Report](screenshots/pdf-sample.png) |
+| ![Login](login.jpg) | ![Report](report.jpg) |
 
 ## Tech Stack
 
