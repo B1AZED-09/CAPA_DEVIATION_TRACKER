@@ -104,9 +104,24 @@ if st.session_state["authenticated"]:
             row = c.fetchone()
             
             if row:
+                from reportlab.lib.styles import getSampleStyleSheet
+                from reportlab.platypus import Paragraph
+                
                 buffer = io.BytesIO()
                 pdf = canvas.Canvas(buffer, pagesize=letter)
                 width, height = letter
+                styles = getSampleStyleSheet()
+                
+                max_width = width - 200
+                
+                def write_block(label, value, y_pos):
+                    pdf.setFont("Helvetica-Bold", 11)
+                    pdf.drawString(100, y_pos, label)
+                    pdf.setFont("Helvetica", 11)
+                    p = Paragraph(str(value), styles['Normal'])
+                    w, h = p.wrap(max_width, height)
+                    p.drawOn(pdf, 100, y_pos - h)
+                    return y_pos - h - 25
                 
                 pdf.setFont("Helvetica-Bold", 16)
                 pdf.drawString(100, height - 100, "GMP DEVIATION & CAPA REPORT")
@@ -114,31 +129,12 @@ if st.session_state["authenticated"]:
                 pdf.drawString(100, height - 120, f"ID: {row[0]} | Date: {row[1]}")
                 
                 y = height - 160
-                pdf.drawString(100, y, "Batch Affected:")
-                pdf.drawString(250, y, row[2])
-                
-                y -= 20
-                pdf.drawString(100, y, "Severity:")
-                pdf.drawString(250, y, row[3])
-                
-                y -= 20
-                pdf.drawString(100, y, "Description:")
-                pdf.drawString(250, y, row[4])
-                
-                y -= 40
-                pdf.drawString(100, y, "Root Cause Analysis:")
-                y -= 20
-                pdf.drawString(100, y, row[5])
-                
-                y -= 40
-                pdf.drawString(100, y, "Corrective Action:")
-                y -= 20
-                pdf.drawString(100, y, row[6])
-                
-                y -= 40
-                pdf.drawString(100, y, "Preventive Action:")
-                y -= 20
-                pdf.drawString(100, y, row[7])
+                y = write_block("Batch Affected:", row[2], y)
+                y = write_block("Severity:", row[3], y)
+                y = write_block("Description:", row[4], y)
+                y = write_block("Root Cause Analysis:", row[5], y)
+                y = write_block("Corrective Action:", row[6], y)
+                y = write_block("Preventive Action:", row[7], y)
                 
                 pdf.line(100, 100, width - 100, 100)
                 pdf.drawString(100, 80, "Authorized by: ________________________")
@@ -151,4 +147,4 @@ if st.session_state["authenticated"]:
 
 # --- 5. LOGIN SCREEN (If not authenticated) ---
 else:
-    login()
+    login
