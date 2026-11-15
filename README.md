@@ -1,6 +1,6 @@
 # GMP Deviation & CAPA Tracker
 
-A quality management system for logging production deviations and generating audit-ready CAPA reports, built for UK medical cannabis manufacturing workflows.
+A quality management system for logging production deviations and generating audit-ready CAPA reports, built for UK pharmaceutical manufacturing workflows.
 
 ## Problem Statement
 
